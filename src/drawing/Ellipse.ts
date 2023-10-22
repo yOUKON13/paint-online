@@ -1,6 +1,6 @@
 import Brush from "./Brush";
 
-class Rectangle extends Brush {
+class Ellipse extends Brush {
     private startPointX;
     private startPointY;
     private img;
@@ -24,11 +24,11 @@ class Rectangle extends Brush {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.beginPath();
-                this.ctx.rect(this.startPointX, this.startPointY, e.offsetX - this.startPointX, e.offsetY - this.startPointY);
+                this.ctx.ellipse(this.startPointX, this.startPointY, Math.abs(e.offsetX - this.startPointX), Math.abs(e.offsetY - this.startPointY), 0, 0, Math.PI*2);
                 this.ctx.fill();
             }
         }
     }
 }
 
-export default Rectangle;
+export default Ellipse;

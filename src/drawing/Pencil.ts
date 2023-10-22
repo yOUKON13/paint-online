@@ -1,10 +1,6 @@
 import Brush from "./Brush";
 
 class Pencil extends Brush {
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas);
-    }
-
     onMouseUp(e) {
         this.isMouseDown = false;
     }

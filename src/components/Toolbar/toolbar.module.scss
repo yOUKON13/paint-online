@@ -3,8 +3,29 @@
   display: flex;
   align-items: center;
 
-  button{
+  button {
     display: flex;
     align-items: center;
+  }
+
+  &__right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+
+    input[type="color"] {
+      background: transparent;
+      border: none;
+      margin-right: 0.25rem;
+    }
+
+    input[type="number"]{
+      width: 3rem;
+    }
   }
 }

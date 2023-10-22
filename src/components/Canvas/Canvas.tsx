@@ -11,7 +11,19 @@ const Canvas = observer(({paintState}) => {
         }
     }, [canvasRef.current])
 
-    return <main className={style.canvas}>
+    function saveSnapshot(){
+        if (canvasRef.current) {
+            paintState.pushSnapshot(canvasRef.current!.toDataURL());
+        }
+    }
+
+    function saveSnapshotToRedo(){
+        if (canvasRef.current) {
+            paintState.pushSnapshot(canvasRef.current!.toDataURL(), paintState.redoActions);
+        }
+    }
+
+    return <main onMouseDown={saveSnapshot} onMouseUp={saveSnapshotToRedo} className={style.canvas}>
         <canvas ref={canvasRef} width={600} height={400}></canvas>
     </main>
 })
