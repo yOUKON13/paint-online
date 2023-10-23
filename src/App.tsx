@@ -1,29 +1,35 @@
 import './styles/style.scss'
 import Canvas from "./components/Canvas/Canvas";
 import Toolbar from "./components/Toolbar/Toolbar";
-import PaintState from "./state";
-import {useEffect} from "react";
+import SelectUsername from "./components/SelectUsername/SelectUsername";
+import {useContext, useEffect} from "react";
+import {PaintContext} from "./state";
+import {observer} from "mobx-react-lite";
 
-const paintState = new PaintState();
+const App = observer(() => {
+    const paintState = useContext(PaintContext);
 
-function App() {
     useEffect(() => {
-        const ws = new WebSocket("ws://localhost:5000/");
-        ws.onopen = function () {
-            ws.send(JSON.stringify({type: "connected", "username": Math.random()}));
-        }
+        if (paintState.ws) {
+            paintState.ws.onmessage = function (msg) {
+                const json = JSON.parse(msg.data);
 
-        ws.onmessage = function (msg) {
-            console.log(msg.data);
+                switch (json.type) {
+                    case "move":
+                        paintState.setUserCursor(json);
+                        break;
+                }
+            }
         }
-    }, []);
+    }, [paintState.ws]);
 
     return (
         <>
-            <Toolbar paintState={paintState}/>
-            <Canvas paintState={paintState}/>
+            <Toolbar/>
+            <Canvas/>
+            <SelectUsername/>
         </>
     )
-}
+});
 
 export default App

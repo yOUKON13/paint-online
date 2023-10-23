@@ -1,13 +1,16 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import style from "./toolbar.module.scss"
-import {observer} from "mobx-react-lite";
 import Pencil from "../../drawing/Pencil";
 import Rectangle from "../../drawing/Rectangle";
 import Ellipse from "../../drawing/Ellipse";
 import Eraser from "../../drawing/Eraser";
 import Line from "../../drawing/Line";
+import {PaintContext} from "../../state";
+import {observer} from "mobx-react-lite";
 
-const Toolbar = observer(({paintState}) => {
+const Toolbar = observer(()=>{
+    const paintState = useContext(PaintContext);
+
     function setPencil() {
         paintState.setTool(new Pencil(paintState.canvas, paintState.color));
     }

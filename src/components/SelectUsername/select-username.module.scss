@@ -1,0 +1,30 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  max-width: 400px;
+  background: var(--background-main);
+  border: none;
+  outline: none;
+  border-radius: 0.75em;
+  padding: 1em;
+
+  h1{
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  &__form{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 50%;
+    margin: 0 auto;
+
+    input{
+      margin-bottom: 0.5rem;
+    }
+  }
+}
