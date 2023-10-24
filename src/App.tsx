@@ -22,6 +22,9 @@ const App = observer(() => {
                     case "drawEnd":
                         WSDraw(paintState.canvas, json);
                         break;
+                    case "undo":
+                        paintState.setAction(json.data);
+                        break;
                 }
             }
         }

@@ -31,7 +31,7 @@ class PaintState {
     public setUserCursor(data) {
         this.usersCursors[data.username] = {...this.usersCursors[data.username], ...data.coords};
 
-        if(!this.usersCursors[data.username].color){
+        if (!this.usersCursors[data.username].color) {
             this.usersCursors[data.username].color = randomcolor();
         }
     }
@@ -65,6 +65,12 @@ class PaintState {
 
         this.undoCount++;
         const url = this.undoActions.pop();
+        this.setAction(url);
+
+        this.ws.send(JSON.stringify({type: "undo", username: this.username, data: url}));
+    }
+
+    public setAction(url){
         const img = new Image();
         img.src = url;
         img.onload = () => {
@@ -75,7 +81,7 @@ class PaintState {
     }
 
     public redoAction() {
-        if (!this.redoActions.length || !this.undoCount) return;
+        /*if (!this.redoActions.length || !this.undoCount) return;
         this.undoCount--;
         const url = this.redoActions.shift();
         const img = new Image();
@@ -84,7 +90,7 @@ class PaintState {
             const ctx = this.canvas.getContext("2d");
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-        }
+        }*/
     }
 }
 
