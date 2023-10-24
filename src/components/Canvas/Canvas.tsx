@@ -3,8 +3,9 @@ import style from "./canvas.module.scss"
 import {PaintContext} from "../../state";
 import Cursors from "./Cursors/Cursors";
 import {observer} from "mobx-react-lite";
+import WS from "../../WS";
 
-const Canvas = observer(()=>{
+const Canvas = observer(() => {
     const paintState = useContext(PaintContext);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -20,26 +21,16 @@ const Canvas = observer(()=>{
         }
     }
 
-    function saveSnapshotToRedo() {
-        if (canvasRef.current) {
-            paintState.pushSnapshot(canvasRef.current!.toDataURL(), paintState.redoActions);
-        }
-    }
-
     function sendCursor(e) {
-        console.log();
-
-        paintState.ws.send(JSON.stringify({
-            type: "move",
-            username: paintState.username,
+        WS.send("move", {
             coords: {x: e.clientX, y: e.clientY}
-        }))
+        })
     }
 
-    return <main onMouseMove={sendCursor} onMouseDown={saveSnapshot} onMouseUp={saveSnapshotToRedo}
+    return <main onMouseMove={sendCursor} onMouseDown={saveSnapshot}
                  className={style.canvas}>
         <canvas ref={canvasRef} width={600} height={400}></canvas>
-        <Cursors />
+        <Cursors/>
     </main>
 });
 

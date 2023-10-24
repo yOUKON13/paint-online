@@ -49,9 +49,6 @@ const Toolbar = observer(() => {
                 <button onClick={() => paintState.undoAction()}>
                     <span className="material-symbols-outlined">undo</span>
                 </button>
-                <button onClick={() => paintState.redoAction()}>
-                    <span className="material-symbols-outlined">redo</span>
-                </button>
             </div>
         </header>
         <div className={style.toolbar__bottom}>

@@ -1,4 +1,5 @@
 import Brush from "./Brush";
+import WS from "../WS";
 
 class Pencil extends Brush {
     onMouseUp(e) {
@@ -16,28 +17,24 @@ class Pencil extends Brush {
         }
     }
 
-    private drawStart(drawStartX, drawStartY){
+    private drawStart(drawStartX, drawStartY) {
         this.ctx.beginPath();
         this.ctx.moveTo(drawStartX, drawStartY);
 
-        if(!this.ws) return;
-        this.ws.send(JSON.stringify({
-            type: "drawStart",
+        WS.send("drawStart", {
             tool: this.constructor.name,
             data: {
                 x: drawStartX,
                 y: drawStartY,
             }
-        }))
+        })
     }
 
     private drawEnd(drawEndX, drawEndY) {
         this.ctx.lineTo(drawEndX, drawEndY);
         this.ctx.stroke();
 
-        if(!this.ws) return;
-        this.ws.send(JSON.stringify({
-            type: "drawEnd",
+        WS.send("drawEnd", {
             tool: this.constructor.name,
             data: {
                 x: drawEndX,
@@ -45,7 +42,7 @@ class Pencil extends Brush {
                 stroke: this.ctx.lineWidth,
                 color: this.ctx.strokeStyle
             }
-        }));
+        })
     }
 }
 

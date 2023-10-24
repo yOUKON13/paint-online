@@ -1,4 +1,5 @@
 import Brush from "./Brush";
+import WS from "../WS";
 
 class Ellipse extends Brush {
     private startPointX;
@@ -22,24 +23,22 @@ class Ellipse extends Brush {
         }
     }
 
-    private drawStart(img){
+    private drawStart(img) {
         this.img = img;
     }
 
-    private drawEnd(radiusX, radiusY){
+    private drawEnd(radiusX, radiusY) {
         const image = new Image();
         image.src = this.img;
         image.onload = () => {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height);
             this.ctx.beginPath();
-            this.ctx.ellipse(this.startPointX, this.startPointY, radiusX, radiusY, 0, 0, Math.PI*2);
+            this.ctx.ellipse(this.startPointX, this.startPointY, radiusX, radiusY, 0, 0, Math.PI * 2);
             this.ctx.fill();
         }
 
-        if (!this.ws) return;
-        this.ws.send(JSON.stringify({
-            type: "drawEnd",
+        WS.send("drawEnd", {
             tool: this.constructor.name,
             data: {
                 img: this.img,
@@ -50,7 +49,7 @@ class Ellipse extends Brush {
                 stroke: this.ctx.lineWidth,
                 color: this.ctx.strokeStyle
             }
-        }));
+        })
     }
 }
 

@@ -1,4 +1,5 @@
 import Brush from "./Brush";
+import WS from "../WS";
 
 class Line extends Brush {
     private startPointX;
@@ -22,11 +23,11 @@ class Line extends Brush {
         }
     }
 
-    private drawStart(img){
+    private drawStart(img) {
         this.img = img;
     }
 
-    private drawEnd(endX, endY){
+    private drawEnd(endX, endY) {
         const image = new Image();
         image.src = this.img;
         image.onload = () => {
@@ -38,9 +39,7 @@ class Line extends Brush {
             this.ctx.stroke();
         }
 
-        if (!this.ws) return;
-        this.ws.send(JSON.stringify({
-            type: "drawEnd",
+        WS.send("drawEnd", {
             tool: this.constructor.name,
             data: {
                 img: this.img,
@@ -51,7 +50,7 @@ class Line extends Brush {
                 stroke: this.ctx.lineWidth,
                 color: this.ctx.strokeStyle
             }
-        }));
+        });
     }
 }
 

@@ -1,6 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {createContext} from "react";
 import randomcolor from "randomcolor";
+import WS from "./WS";
 
 const ACTIONS_BUFFER = 1024;
 
@@ -13,8 +14,6 @@ class PaintState {
     public canvas;
     public color = "#000000";
     private undoActions = [];
-    redoActions = [];
-    private undoCount = 0;
 
     constructor() {
         makeAutoObservable(this)
@@ -63,11 +62,10 @@ class PaintState {
     public undoAction() {
         if (!this.undoActions.length) return;
 
-        this.undoCount++;
         const url = this.undoActions.pop();
         this.setAction(url);
 
-        this.ws.send(JSON.stringify({type: "undo", username: this.username, data: url}));
+        WS.send("undo", {data:url});
     }
 
     public setAction(url){
@@ -78,19 +76,6 @@ class PaintState {
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
         }
-    }
-
-    public redoAction() {
-        /*if (!this.redoActions.length || !this.undoCount) return;
-        this.undoCount--;
-        const url = this.redoActions.shift();
-        const img = new Image();
-        img.src = url;
-        img.onload = () => {
-            const ctx = this.canvas.getContext("2d");
-            ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-        }*/
     }
 }
 

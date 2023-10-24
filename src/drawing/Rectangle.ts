@@ -1,4 +1,5 @@
 import Brush from "./Brush";
+import WS from "../WS";
 
 class Rectangle extends Brush {
     private startPointX;
@@ -37,9 +38,7 @@ class Rectangle extends Brush {
             this.ctx.fill();
         }
 
-        if (!this.ws) return;
-        this.ws.send(JSON.stringify({
-            type: "drawEnd",
+        WS.send("drawEnd", {
             tool: this.constructor.name,
             data: {
                 img: this.img,
@@ -50,7 +49,7 @@ class Rectangle extends Brush {
                 stroke: this.ctx.lineWidth,
                 color: this.ctx.strokeStyle
             }
-        }));
+        })
     }
 }
 
