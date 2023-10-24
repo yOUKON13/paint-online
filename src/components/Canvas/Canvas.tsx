@@ -27,17 +27,19 @@ const Canvas = observer(()=>{
     }
 
     function sendCursor(e) {
+        console.log();
+
         paintState.ws.send(JSON.stringify({
             type: "move",
             username: paintState.username,
-            coords: {x: e.pageX, y: e.pageY}
+            coords: {x: e.clientX, y: e.clientY}
         }))
     }
 
     return <main onMouseMove={sendCursor} onMouseDown={saveSnapshot} onMouseUp={saveSnapshotToRedo}
                  className={style.canvas}>
         <canvas ref={canvasRef} width={600} height={400}></canvas>
-        <Cursors/>
+        <Cursors />
     </main>
 });
 

@@ -6,16 +6,46 @@ class Pencil extends Brush {
     }
 
     onMouseDown(e) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(e.offsetX, e.offsetY);
+        this.drawStart(e.offsetX, e.offsetY)
         this.isMouseDown = true;
     }
 
     onMouseMove(e) {
-        if(this.isMouseDown){
-            this.ctx.lineTo(e.offsetX, e.offsetY);
-            this.ctx.stroke();
+        if (this.isMouseDown) {
+            this.drawEnd(e.offsetX, e.offsetY);
         }
+    }
+
+    private drawStart(drawStartX, drawStartY){
+        this.ctx.beginPath();
+        this.ctx.moveTo(drawStartX, drawStartY);
+
+        if(!this.ws) return;
+        this.ws.send(JSON.stringify({
+            type: "drawStart",
+            tool: this.constructor.name,
+            data: {
+                x: drawStartX,
+                y: drawStartY,
+            }
+        }))
+    }
+
+    private drawEnd(drawEndX, drawEndY) {
+        this.ctx.lineTo(drawEndX, drawEndY);
+        this.ctx.stroke();
+
+        if(!this.ws) return;
+        this.ws.send(JSON.stringify({
+            type: "drawEnd",
+            tool: this.constructor.name,
+            data: {
+                x: drawEndX,
+                y: drawEndY,
+                stroke: this.ctx.lineWidth,
+                color: this.ctx.strokeStyle
+            }
+        }));
     }
 }
 

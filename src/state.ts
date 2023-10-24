@@ -89,4 +89,4 @@ class PaintState {
 }
 
 export default PaintState;
-export const PaintContext = createContext<PaintState>();
+export const PaintContext = createContext<PaintState>(new PaintState());

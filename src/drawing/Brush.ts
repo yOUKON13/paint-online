@@ -2,14 +2,21 @@ class Brush {
     protected canvas: HTMLCanvasElement;
     protected ctx: CanvasRenderingContext2D;
     protected isMouseDown = false;
+    protected ws;
 
-    constructor(canvas: HTMLCanvasElement, color: string) {
+    constructor(canvas: HTMLCanvasElement, color: string, ws) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
-        this.canvas.onmouseup = this.onMouseUp.bind(this);
-        this.canvas.onmousedown = this.onMouseDown.bind(this);
-        this.canvas.onmousemove = this.onMouseMove.bind(this);
+
+        const isNotLocal = !!ws;
+        if(isNotLocal){
+            this.canvas.onmouseup = this.onMouseUp.bind(this);
+            this.canvas.onmousedown = this.onMouseDown.bind(this);
+            this.canvas.onmousemove = this.onMouseMove.bind(this);
+        }
+
         this.color = color;
+        this.ws = ws;
     }
 
     set color(color) {
